@@ -1,0 +1,14 @@
+av <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/avengers/avengers.csv", stringsAsFactors = FALSE)
+
+library(tidyverse)
+names(av)
+av1 = av %>% gather(key = Time, value = Death, c(11,13,15,17,19))
+av1 = av1 %>% mutate(Time = parse_number(Time)) %>% select(Name.Alias, Time, Death)
+av2 = av %>% gather(key = Time, value = Return, c(12,14,16,18,20))
+av2 = av2 %>% mutate(Time = parse_number(Time)) %>% select(Name.Alias, Time, Return)
+
+av.neat = left_join(av1, av2, by = c("Name.Alias", "Time"))
+
+#AHawkeye died twice
+
+av.neat %>% filter(Name.Alias == "Clinton Francis Barton")
